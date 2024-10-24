@@ -143,7 +143,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   // Event listener for JSON file import
   document.getElementById('importFile').addEventListener('change', importFromJsonFile);
   
-  // Initialize form, populate categories, and set the last filter on page load
+  
   createAddQuoteForm();
   populateCategories();
   
