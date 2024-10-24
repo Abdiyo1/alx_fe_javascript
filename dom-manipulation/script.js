@@ -1,5 +1,5 @@
 // Array of quote objects, each with a 'text' and 'category'
-const quotes = [
+let quotes = [
     { text: "The only way to do great work is to love what you do.", category: "Motivation" },
     { text: "Success is not the key to happiness. Happiness is the key to success.", category: "Success" },
     { text: "Don’t watch the clock; do what it does. Keep going.", category: "Perseverance" }
@@ -15,7 +15,6 @@ const quotes = [
     quoteDisplay.innerHTML = `<p>${randomQuote.text} <strong>(${randomQuote.category})</strong></p>`;
   }
   
-  // Function to create the form to add a new quote
   function createAddQuoteForm() {
     const formHTML = `
       <form id="quoteForm">
@@ -30,25 +29,23 @@ const quotes = [
   
     // Handle form submission
     const quoteForm = document.getElementById('quoteForm');
-    quoteForm.addEventListener('submit', 
-        function addQuote() {
-        const newQuoteText = document.getElementById('newQuoteText').value;
-        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
-        
-        if (newQuoteText && newQuoteCategory) {
-          quotes.push({ text: newQuoteText, category: newQuoteCategory });
-          document.getElementById('newQuoteText').value = '';
-          document.getElementById('newQuoteCategory').value = '';
-          alert("Quote added successfully!");
-        } else {
-          alert("Please enter both a quote and a category.");
-        }
-      });
-  }
+    quoteForm.addEventListener('submit', function(event) {
+      event.preventDefault();
   
+      // Get input values
+      const newText = document.getElementById('quoteText').value;
+      const newCategory = document.getElementById('quoteCategory').value;
+  
+      // Add new quote to the array
+      quotes.push({ text: newText, category: newCategory });
+  
+      // Clear the form
+      quoteForm.reset();
+    });
+  }
+  createAddQuoteForm();
   // Event listener to display a new random quote when button is clicked
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   
-  // Automatically call createAddQuoteForm to render the form on page load
-  createAddQuoteForm();
+ 
   
