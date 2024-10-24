@@ -58,7 +58,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
     // Set the selected filter from local storage
     const savedFilter = loadFilter();
     categoryFilter.value = savedFilter;
-    filterQuotes();  // Display quotes based on the saved filter
+    filterQuote();  // Display quotes based on the saved filter
   }
   
   // Create form to add a new quote using createElement and appendChild
@@ -104,7 +104,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   
       // Update categories and re-apply the current filter
       populateCategories();
-      filterQuotes();
+      filterQuote();
   
       form.reset();
     });
@@ -135,7 +135,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   
       // Update categories and apply filter after import
       populateCategories();
-      filterQuotes();
+      filterQuote();
     };
     fileReader.readAsText(event.target.files[0]);
   }
