@@ -10,25 +10,55 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
     localStorage.setItem('quotes', JSON.stringify(quotes));
   }
   
-  // Function to display a random quote
-  function showRandomQuote() {
-    const randomIndex = Math.floor(Math.random() * quotes.length);
-    const randomQuote = quotes[randomIndex];
-  
-    const quoteDisplay = document.getElementById('quoteDisplay');
-    quoteDisplay.innerHTML = `<p>${randomQuote.text} <strong>(${randomQuote.category})</strong></p>`;
-  
-    // Store the last displayed quote in session storage
-    sessionStorage.setItem('lastQuote', JSON.stringify(randomQuote));
+  // Save the selected filter to local storage
+  function saveFilter(filter) {
+    localStorage.setItem('selectedFilter', filter);
   }
   
-  // Load the last displayed quote from session storage (optional)
-  function loadLastQuote() {
-    const lastQuote = JSON.parse(sessionStorage.getItem('lastQuote'));
-    if (lastQuote) {
-      const quoteDisplay = document.getElementById('quoteDisplay');
-      quoteDisplay.innerHTML = `<p>${lastQuote.text} <strong>(${lastQuote.category})</strong></p>`;
-    }
+  // Get the selected filter from local storage
+  function loadFilter() {
+    return localStorage.getItem('selectedFilter') || 'all';
+  }
+  
+  // Function to display quotes filtered by category
+  function filterQuotes() {
+    const selectedCategory = document.getElementById('categoryFilter').value;
+    const filteredQuotes = selectedCategory === 'all'
+      ? quotes
+      : quotes.filter(quote => quote.category === selectedCategory);
+  
+    const quoteDisplay = document.getElementById('quoteDisplay');
+    quoteDisplay.innerHTML = '';  // Clear previous content
+  
+    filteredQuotes.forEach(quote => {
+      const quoteElement = document.createElement('p');
+      quoteElement.innerHTML = `${quote.text} <strong>(${quote.category})</strong>`;
+      quoteDisplay.appendChild(quoteElement);
+    });
+  
+    // Save the selected filter to local storage
+    saveFilter(selectedCategory);
+  }
+  
+  // Function to dynamically populate category dropdown
+  function populateCategories() {
+    const uniqueCategories = [...new Set(quotes.map(quote => quote.category))];
+    const categoryFilter = document.getElementById('categoryFilter');
+    
+    // Clear existing options
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+  
+    uniqueCategories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      categoryFilter.appendChild(option);
+    });
+  
+    // Set the selected filter from local storage
+    const savedFilter = loadFilter();
+    categoryFilter.value = savedFilter;
+    filterQuotes();  // Display quotes based on the saved filter
   }
   
   // Create form to add a new quote using createElement and appendChild
@@ -72,6 +102,10 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
       quotes.push({ text: newText, category: newCategory });
       saveQuotes();
   
+      // Update categories and re-apply the current filter
+      populateCategories();
+      filterQuotes();
+  
       form.reset();
     });
   }
@@ -98,20 +132,18 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
       quotes.push(...importedQuotes);  // Merge new quotes
       saveQuotes();  // Save updated quotes to local storage
       alert('Quotes imported successfully!');
+  
+      // Update categories and apply filter after import
+      populateCategories();
+      filterQuotes();
     };
     fileReader.readAsText(event.target.files[0]);
   }
   
-  // Event listener to show a random quote
-  document.getElementById('newQuote').addEventListener('click', showRandomQuote);
-  
   // Event listener for JSON file import
   document.getElementById('importFile').addEventListener('change', importFromJsonFile);
   
-  // Automatically load last quote from session and create add quote form on page load
-  loadLastQuote();
+  // Initialize form, populate categories, and set the last filter on page load
   createAddQuoteForm();
-  
-  // Add event listener to export button
-  document.getElementById('exportButton').addEventListener('click', exportQuotes);
+  populateCategories();
   
