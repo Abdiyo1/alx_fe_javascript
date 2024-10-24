@@ -21,7 +21,7 @@ let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   }
   
   // Function to display quotes filtered by category
-  function filterQuotes() {
+  function filterQuote() {
     const selectedCategory = document.getElementById('categoryFilter').value;
     const filteredQuotes = selectedCategory === 'all'
       ? quotes
