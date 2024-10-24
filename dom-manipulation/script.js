@@ -30,19 +30,20 @@ const quotes = [
   
     // Handle form submission
     const quoteForm = document.getElementById('quoteForm');
-    quoteForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-  
-      // Get input values
-      const newText = document.getElementById('quoteText').value;
-      const newCategory = document.getElementById('quoteCategory').value;
-  
-      // Add new quote to the array
-      quotes.push({ text: newText, category: newCategory });
-  
-      // Clear the form
-      quoteForm.reset();
-    });
+    quoteForm.addEventListener('submit', 
+        function addQuote() {
+        const newQuoteText = document.getElementById('newQuoteText').value;
+        const newQuoteCategory = document.getElementById('newQuoteCategory').value;
+        
+        if (newQuoteText && newQuoteCategory) {
+          quotes.push({ text: newQuoteText, category: newQuoteCategory });
+          document.getElementById('newQuoteText').value = '';
+          document.getElementById('newQuoteCategory').value = '';
+          alert("Quote added successfully!");
+        } else {
+          alert("Please enter both a quote and a category.");
+        }
+      });
   }
   
   // Event listener to display a new random quote when button is clicked
