@@ -18,7 +18,7 @@ function notifyUser(message) {
   }, 3000);
 }
 
-async function syncQuotes() {
+async function fetchQuotesFromServer() {
   try {
     const response = await fetch(SERVER_URL);
     const serverQuotes = await response.json();
@@ -52,7 +52,7 @@ async function pushQuoteToServer(quote) {
   }
 }
 
-setInterval(syncQuotes, 30000);
+setInterval(fetchQuotesFromServer, 30000);
 
 function resolveConflicts(serverQuotes) {
   serverQuotes.forEach(serverQuote => {
