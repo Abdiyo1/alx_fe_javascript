@@ -11,7 +11,6 @@
   <!-- Category Filter Dropdown -->
   <select id="categoryFilter" onchange="filterQuotes()">
     <option value="all">All Categories</option>
-    <!-- Dynamically populated categories will go here -->
   </select>
 
   <!-- Placeholder for displaying quotes -->
@@ -24,10 +23,13 @@
   <div id="addQuoteForm"></div>
 
   <!-- Button to export quotes to JSON -->
-  <button id="exportButton">Export Quotes</button>
+  <button id="exportButton" onclick="exportQuotes()">Export Quotes</button>
 
   <!-- Input to import quotes from JSON -->
-  <input type="file" id="importFile" accept=".json" />
+  <input type="file" id="importFile" accept=".json" onchange="importFromJsonFile(event)" />
+
+  <!-- Notification div -->
+  <div id="notification"></div>
 
   <!-- Link to the JavaScript file -->
   <script src="script.js"></script>
