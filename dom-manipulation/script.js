@@ -55,6 +55,7 @@ async function pushQuoteToServer(quote) {
 function syncQuotes() {
   fetchQuotesFromServer();
   quotes.forEach(pushQuoteToServer);
+  alert("Quotes synced with server!");
 }
 
 setInterval(syncQuotes, 30000);
