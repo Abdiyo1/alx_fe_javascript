@@ -52,7 +52,12 @@ async function pushQuoteToServer(quote) {
   }
 }
 
-setInterval(fetchQuotesFromServer, 30000);
+function syncQuotes() {
+  fetchQuotesFromServer();
+  quotes.forEach(pushQuoteToServer);
+}
+
+setInterval(syncQuotes, 30000);
 
 function resolveConflicts(serverQuotes) {
   serverQuotes.forEach(serverQuote => {
